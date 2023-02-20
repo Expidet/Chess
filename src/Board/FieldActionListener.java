@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 
 public class FieldActionListener implements ActionListener {
 
-    final JButton self;
+    final Field self;
     final Color origColor;
     final Color selectedColor;
 
     private int clickCount = 0;
-    public FieldActionListener(JButton self){
+    public FieldActionListener(Field self){
         this.self = self;
         this.origColor = self.getBackground();
         this.selectedColor = new Color(218, 196, 49);
