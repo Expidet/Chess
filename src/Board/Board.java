@@ -8,16 +8,15 @@ public class Board implements Runnable{
 
     private JPanel BoardScreen;
 
+    public static final int WIDTH = 1200;
+    public static final int HEIGHT = 1200;
+
     public JPanel generateScreen(){
         JPanel panel = new JPanel(new GridLayout(8, 8));
-        Color darkBrown = new Color(185, 139, 98);
-        Color lightBrown = new Color(242, 218, 179);
+
         for(int i = 0; i < 64; i++){
-            JButton btn = new JButton();
-            btn.setBackground(((i + Math.floor(i / 8)) % 2 == 0) ? lightBrown : darkBrown);
-            btn.addActionListener(new FieldActionListener(btn));
-            btn.setBorderPainted(false);
-            panel.add(btn);
+            Field f = new Field(i);
+            panel.add(f);
         }
         return panel;
     }
@@ -29,7 +28,8 @@ public class Board implements Runnable{
 
     private void showGUI(){
         JFrame frame = new JFrame("Board");
-        frame.setPreferredSize(new Dimension(1200, 1200));
+        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        frame.setLayeredPane(new PiecePanel());
         frame.setContentPane(generateScreen());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
