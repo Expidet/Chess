@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class Board implements Runnable{
 
-    public static final int WIDTH = 700;
-    public static final int HEIGHT = 700;
+    public static final int WIDTH = 1000;
+    public static final int HEIGHT = 1000;
     public static final Field[] fields = new Field[64];
     private static PiecePanel piecePanel;
     private static Field selectedField;

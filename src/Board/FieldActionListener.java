@@ -19,9 +19,12 @@ public class FieldActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (self.isMovable()) {
             Field startField = Board.getSelectedField();
+            boolean kingSelected = startField.getPieceOnField() instanceof King;
             movePieceToSelf(startField);
             checkEnPassant();
-            checkCastles();
+            if(kingSelected){
+                checkCastles();
+            }
             Board.getPiecePanel().repaint();
             GameManager.progressTurn();
         }
