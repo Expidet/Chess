@@ -1,69 +1,31 @@
 package Board;
 
-import GameManaging.CastleMove;
-import GameManaging.GameManager;
-import Pieces.King;
-import Pieces.Piece;
-
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class FieldActionListener implements ActionListener {
 
     final Field self;
+    final Color origColor;
+    final Color selectedColor;
+
+    private int clickCount = 0;
     public FieldActionListener(Field self){
         this.self = self;
+        this.origColor = self.getBackground();
+        this.selectedColor = new Color(218, 196, 49);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (self.isMovable()) {
-            Field startField = Board.getSelectedField();
-            boolean kingSelected = startField.getPieceOnField() instanceof King;
-            movePieceToSelf(startField);
-            checkEnPassant();
-            if(kingSelected){
-                checkCastles();
-            }
-            Board.getPiecePanel().repaint();
-            GameManager.progressTurn();
+        if(clickCount % 2 == 0){
+            self.setBackground(this.selectedColor);
+        }else {
+            self.setBackground(this.origColor);
         }
-        if(self.getPieceOnField() == null && Board.getSelectedField() != null){
-            Board.getSelectedField().setSelected(false);
-        }
-        if(self.getPieceOnField() != null && GameManager.getCurrentTurn() == self.getPieceOnField().getTeam()){
-            if(self.getPieceOnField() != null && Board.getSelectedField() != null && !self.isSelected()){
-                Board.getSelectedField().setSelected(false);
-                self.setSelected(true);
-            } else if(self.getPieceOnField() != null){
-                self.setSelected(!self.isSelected());
-            }
-        }
-    }
 
-    public void movePieceToSelf(Field startField){
-        Piece pieceToMove = Board.getSelectedField().getPieceOnField();
-        //If a piece was captured
-        self.removePieceFromSelf();
-
-        startField.setSelected(false);
-        pieceToMove.moveToNewField(self);
-        pieceToMove.moved();
-    }
-
-    private void checkEnPassant(){
-        Field enPassant = GameManager.getEnPassant(self);
-        if(enPassant != null){
-            enPassant.removePieceFromSelf();
-            enPassant.setPieceOnField(null);
-        }
-    }
-
-    private void checkCastles(){
-        CastleMove castleMove = GameManager.getCastle(self);
-        if(castleMove != null){
-            castleMove.rookToCastle.moveToNewField(castleMove.newRookField);
-            GameManager.clearCastleMoves();
-        }
+        clickCount++;
     }
 }
