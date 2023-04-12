@@ -11,6 +11,7 @@ public class Board implements Runnable{
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 1200;
     public static final Field[] fields = new Field[64];
+    private static Field selectedField;
 
     public JPanel generateScreen(){
         JPanel panel = new JPanel(new GridLayout(8, 8));
@@ -28,6 +29,14 @@ public class Board implements Runnable{
     @Override
     public void run() {
         showGUI();
+    }
+
+    public static void setSelectedField(Field selectedField) {
+        Board.selectedField = selectedField;
+    }
+
+    public static Field getSelectedField() {
+        return selectedField;
     }
 
     private void showGUI(){
