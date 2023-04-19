@@ -8,9 +8,9 @@ import Pieces.*;
 public class PiecePanel extends JLayeredPane {
     ArrayList<Piece> pieces = new ArrayList<>();
     public PiecePanel(){
-        this.generateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        //this.generateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //this.generateBoard("pppppppp/p6p/p6p/p2Q3p/p6p/p6p/p6p/pppppppp w KQkq - 0 1");
-        //this.generateBoard("8/8/8/3B4/8/8/8/8 w KQkq - 0 1");
+        this.generateBoard("8/8/8/3K4/8/8/8/8 w KQkq - 0 1");
     }
 
     private void generateBoard(String FEN){
@@ -50,6 +50,12 @@ public class PiecePanel extends JLayeredPane {
             currentIndex++;
         }
 
+        for(Field f : Board.fields){
+            this.setLayer(f.getFieldStateVisualizer(), 1);
+            f.getFieldStateVisualizer().setBounds(f.getXPos(Board.WIDTH / 8), f.getYPos(Board.HEIGHT / 8), Board.WIDTH / 8, Board.HEIGHT / 8);
+            this.add(f.getFieldStateVisualizer());
+        }
+
         for(Piece p : pieces){
             this.setLayer(p, 2);
             p.setBounds(p.getCurrentField().getXPos(Board.WIDTH / 8), p.getCurrentField().getYPos(Board.HEIGHT / 8), Board.WIDTH / 8, Board.HEIGHT / 8);
@@ -61,6 +67,10 @@ public class PiecePanel extends JLayeredPane {
     @Override
     public void repaint() {
         super.repaint();
+        for(Field f : Board.fields){
+            f.getFieldStateVisualizer().setBounds(f.getXPos(this.getWidth() / 8), f.getYPos(this.getHeight() / 8), this.getWidth() / 8, this.getHeight() / 8);
+        }
+
         for(Piece p : pieces){
             p.setBounds(p.getCurrentField().getXPos(this.getWidth() / 8), p.getCurrentField().getYPos(this.getHeight() / 8), this.getWidth() / 8, this.getHeight() / 8);
         }

@@ -7,6 +7,7 @@ import java.awt.*;
 public class Board implements Runnable{
 
     private JPanel BoardScreen;
+    private static PiecePanel pp;
 
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 1200;
@@ -43,13 +44,17 @@ public class Board implements Runnable{
         JFrame frame = new JFrame("Board");
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         JPanel cp = generateScreen();
-        PiecePanel pp = new PiecePanel();
+        pp = new PiecePanel();
         frame.setLayeredPane(pp);
         frame.setContentPane(cp);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         pp.repaint();
         frame.setVisible(true);
+    }
+
+    public static PiecePanel getPiecePanel(){
+        return pp;
     }
 
     public static void main(String[] args) {

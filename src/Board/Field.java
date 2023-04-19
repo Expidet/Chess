@@ -1,5 +1,6 @@
 package Board;
 
+import GameManaging.GameManager;
 import Pieces.Piece;
 
 import javax.swing.*;
@@ -11,8 +12,10 @@ public class Field extends JButton {
     private final int column;
     private final int fieldId;
     private boolean selected;
+    private boolean isMovable;
     private Piece pieceOnField;
 
+    private final FieldStateVisualizer fieldStateVisualizer;
     private final Color origColor;
     private final Color selectedColor;
 
@@ -29,6 +32,8 @@ public class Field extends JButton {
         this.setBorderPainted(false);
 
         this.fieldId = index;
+        this.fieldStateVisualizer = new FieldStateVisualizer(this);
+        this.fieldStateVisualizer.setVisible(false);
         this.add(new JLabel(String.valueOf(fieldId)));
     }
 
@@ -45,7 +50,13 @@ public class Field extends JButton {
         Board.setSelectedField(((selected) ? this : null));
         setBackground((selected) ? this.selectedColor : this.origColor);
         if(selected){
-            this.pieceOnField.getValidMoves();
+            for (Field validMove : this.pieceOnField.getValidMoves()) {
+                validMove.makeFieldMovable();
+            }
+        }else{
+            for (Field validMove : this.pieceOnField.getValidMoves()) {
+                validMove.makeFieldUnmovable();
+            }
         }
     }
     public boolean isSelected(){
@@ -70,5 +81,24 @@ public class Field extends JButton {
 
     public int getFieldId() {
         return this.fieldId;
+    }
+
+    public boolean isMovable() {
+        return isMovable;
+    }
+
+    public FieldStateVisualizer getFieldStateVisualizer() {
+        return fieldStateVisualizer;
+    }
+
+    public void makeFieldMovable() {
+        this.fieldStateVisualizer.updateFile();
+        this.fieldStateVisualizer.setVisible(true);
+        isMovable = true;
+    }
+
+    public void makeFieldUnmovable() {
+        this.fieldStateVisualizer.setVisible(false);
+        isMovable = false;
     }
 }

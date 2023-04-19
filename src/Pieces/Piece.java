@@ -47,4 +47,10 @@ public abstract class Piece extends JLabel {
     }
 
     public abstract ArrayList<Field> getValidMoves();
+
+    public void moveToNewField(Field newField) {
+        this.getCurrentField().setPieceOnField(null);
+        this.currentField = newField;
+        newField.setPieceOnField(this);
+    }
 }
