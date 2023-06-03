@@ -43,9 +43,6 @@ public class Queen extends Piece{
             }
             currentFieldIndex = startFieldIndex;
         }
-        for(Field f : validMoves){
-            System.out.println(f.getFieldId());
-        }
         return validMoves;
     }
 

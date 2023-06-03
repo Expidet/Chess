@@ -1,12 +1,15 @@
 package Pieces;
 
 import Board.*;
+import GameManaging.EnPassantMove;
+import GameManaging.GameManager;
 
 import java.util.ArrayList;
 
 public class Pawn extends Piece{
 
     private int timesMoved = 0;
+    private boolean canBeEnPassantInFuture = true;
     public Pawn(Teams team, Field startField) {
         super("chessPieces/" + team.name().toLowerCase() + "_pawn.svg", team, startField);
     }
@@ -25,9 +28,6 @@ public class Pawn extends Piece{
             validMoves.add(Board.fields[newPos]);
         }
         validMoves.addAll(getTakes());
-        for(Field f : validMoves){
-            System.out.println(f.getFieldId());
-        }
         return validMoves;
     }
 
@@ -51,6 +51,23 @@ public class Pawn extends Piece{
                 }
             }
         }
+
+
+        //En passant
+        if(currentField.getRow() == ((this.getTeam() == Teams.WHITE) ? 3 : 4)){
+            if(Board.fields[currentField.getFieldId() + 1].getPieceOnField() instanceof Pawn && ((Pawn) Board.fields[currentField.getFieldId() + 1].getPieceOnField()).canBeEnPassant()){
+                takes.add(Board.fields[currentField.getFieldId() + ((this.getTeam() == Teams.BLACK) ? 9 : -7)]);
+                EnPassantMove enPassantMove = new EnPassantMove(Board.fields[currentField.getFieldId() + 1], Board.fields[currentField.getFieldId() + ((this.getTeam() == Teams.BLACK) ? 9 : -7)]);
+                GameManager.addEnPassantMove(enPassantMove);
+                System.out.println("New en passant move added");
+            }
+            if(Board.fields[currentField.getFieldId() - 1].getPieceOnField() instanceof Pawn && ((Pawn) Board.fields[currentField.getFieldId() - 1].getPieceOnField()).canBeEnPassant()){
+                takes.add(Board.fields[currentField.getFieldId() + ((this.getTeam() == Teams.BLACK) ? 7 : -9)]);
+                EnPassantMove enPassantMove = new EnPassantMove(Board.fields[currentField.getFieldId() - 1], Board.fields[currentField.getFieldId() + ((this.getTeam() == Teams.BLACK) ? 7 : -9)]);
+                GameManager.addEnPassantMove(enPassantMove);
+                System.out.println("New en passant move added");
+            }
+        }
         return takes;
     }
 
@@ -61,5 +78,17 @@ public class Pawn extends Piece{
             return new Integer[]{8 * team, 16 * team};
         }
         return new Integer[]{8 * team};
+    }
+
+    @Override
+    public void moved() {
+        timesMoved += 1;
+    }
+
+    public void setCanBeEnPassantInFuture(boolean canBeEnPassantInFuture) {
+        this.canBeEnPassantInFuture = canBeEnPassantInFuture;
+    }
+    public boolean canBeEnPassant(){
+        return timesMoved == 1 && this.getCurrentField().getRow() == ((this.getTeam() == Teams.BLACK) ? 3 : 4) && canBeEnPassantInFuture;
     }
 }

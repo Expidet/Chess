@@ -1,5 +1,6 @@
 package Board;
 
+import GameManaging.CastleMove;
 import GameManaging.GameManager;
 import Pieces.Piece;
 
@@ -49,14 +50,20 @@ public class Field extends JButton {
         this.selected = selected;
         Board.setSelectedField(((selected) ? this : null));
         setBackground((selected) ? this.selectedColor : this.origColor);
-        if(selected){
-            for (Field validMove : this.pieceOnField.getValidMoves()) {
+        if (selected) {
+            for (Field validMove : this.getPieceOnField().getValidMoves()) {
                 validMove.makeFieldMovable();
             }
-        }else{
-            for (Field validMove : this.pieceOnField.getValidMoves()) {
+        } else {
+            for (Field validMove :this.getPieceOnField().getValidMoves()) {
                 validMove.makeFieldUnmovable();
             }
+        }
+    }
+
+    public void removePieceFromSelf(){
+        if(this.getPieceOnField() != null){
+            Board.getPiecePanel().removePieceFromBoard(this.getPieceOnField());
         }
     }
     public boolean isSelected(){

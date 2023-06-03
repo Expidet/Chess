@@ -8,9 +8,9 @@ import Pieces.*;
 public class PiecePanel extends JLayeredPane {
     ArrayList<Piece> pieces = new ArrayList<>();
     public PiecePanel(){
-        //this.generateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        this.generateBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         //this.generateBoard("pppppppp/p6p/p6p/p2Q3p/p6p/p6p/p6p/pppppppp w KQkq - 0 1");
-        this.generateBoard("8/8/8/3K4/8/8/8/8 w KQkq - 0 1");
+        //this.generateBoard("8/8/8/3K4/8/8/8/8 w KQkq - 0 1");
     }
 
     private void generateBoard(String FEN){
@@ -62,6 +62,12 @@ public class PiecePanel extends JLayeredPane {
             this.add(p);
         }
 
+    }
+
+    public void removePieceFromBoard(Piece piece){
+        pieces.remove(piece);
+        this.remove(piece);
+        this.repaint();
     }
 
     @Override

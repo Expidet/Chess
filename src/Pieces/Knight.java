@@ -27,9 +27,6 @@ public class Knight extends Piece{
             }
             validMoves.add(Board.fields[newFieldIndex]);
         }
-        for(Field f : validMoves){
-            System.out.println(f.getFieldId());
-        }
         return validMoves;
     }
 

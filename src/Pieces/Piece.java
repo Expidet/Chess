@@ -53,4 +53,6 @@ public abstract class Piece extends JLabel {
         this.currentField = newField;
         newField.setPieceOnField(this);
     }
+
+    public void moved(){}
 }
